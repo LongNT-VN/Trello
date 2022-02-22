@@ -14,6 +14,7 @@ var auth = require('./routes/auth');
 var member = require('./routes/members');
 var board = require('./routes/board');
 var list = require('./routes/list');
+var action = require('./routes/action');
 
 var app = express();
 
@@ -42,6 +43,7 @@ app.use('/api/auth', auth);
 app.use('/api/member', member);
 app.use('/api/board', board);
 app.use('/api/list', list);
+app.use('/api/action', action);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

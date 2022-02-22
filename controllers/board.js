@@ -55,10 +55,10 @@ const getBoard = async (req, res, next) => {
 }
 
 //Get all Board
-const getAllBoard = async (req, res, next) => {
+const getBoards = async (req, res, next) => {
     loggerInfo('Getting Board...');
-    const idMember = req.member.id;
-    if (idMember) {
+    if (req.member) {
+        const idMember = req.member.id;
         try {
             let boards = await Board.find({
                 $or: [{
@@ -141,4 +141,4 @@ const deleteBoard = async (req, res, next) => {
 }
 
 
-module.exports = { updateBoard, getBoard, deleteBoard, createBoard, getAllBoard };
+module.exports = { updateBoard, getBoard, deleteBoard, createBoard, getBoards };

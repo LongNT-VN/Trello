@@ -7,7 +7,7 @@ const router = express.Router();
 //Create List
 router.post('/create',verifyToken,createList);
 //Get List
-router.get('/get/:id',verifyToken,getLists);
+router.get('/getAll',verifyToken,getLists);
 //Update List
 router.put('/update/:id',verifyToken,updateList);
 //Delete List
