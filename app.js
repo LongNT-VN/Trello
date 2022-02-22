@@ -3,9 +3,17 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var cors = require('cors');
+const dotenv = require('dotenv');
+
+const connect = require('./database/connectDatabase');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var membersRouter = require('./routes/members');
+var auth = require('./routes/auth');
+var member = require('./routes/members');
+var board = require('./routes/board');
+var list = require('./routes/list');
 
 var app = express();
 
@@ -19,8 +27,21 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
+
+dotenv.config();
+//connect databse
+
+connect();
+
+app.use(cors());
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/api/members', membersRouter);
+app.use('/api/auth', auth);
+app.use('/api/member', member);
+app.use('/api/board', board);
+app.use('/api/list', list);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
