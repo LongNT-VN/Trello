@@ -154,9 +154,13 @@ const updateList = async (req, res, next) => {
         const idList = req.params.id;
         const idMember = req.member.id;
         let listUpdateInfo = req.body
-        //Remove idBoard change
+        //Remove idBoard and idAuthor change
         if (listUpdateInfo.idBoard) {
             delete listUpdateInfo.idBoard;
+
+        }
+        if (listUpdateInfo.author) {
+            delete listUpdateInfo.author;
         }
         const [checkAuthorization, checkMember, errorInfo] = await checkAuthorized(idList, idMember)
         if (checkAuthorization || checkMember) {
@@ -197,7 +201,7 @@ const deleteList = async (req, res, next) => {
         if (checkAuthorization || checkMember) {
             try {
                 await List.findByIdAndDelete(idList);
-                await Action.deleteMany({idList: idList})
+                await Action.deleteMany({ idList: idList })
                 res.status(200).json("List has been deleted!");
             } catch (error) {
                 loggerError(error)

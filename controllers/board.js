@@ -44,7 +44,7 @@ const getBoard = async (req, res, next) => {
                     },
                     { _id: idQuery }]
             });
-            res.status(201).json(boards);
+            res.status(200).json(boards);
         } catch (error) {
             loggerError(error)
             res.status(500).json(error)
@@ -70,7 +70,7 @@ const getBoards = async (req, res, next) => {
                 }]
 
             });
-            res.status(201).json(boards);
+            res.status(200).json(boards);
         } catch (error) {
             loggerError(error)
             res.status(500).json(error)

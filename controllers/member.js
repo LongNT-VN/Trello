@@ -32,8 +32,12 @@ const updateMember = async (req, res, next) => {
         }
         else {
             try {
+                let memberUpdateInfo = req.body
+                if (memberUpdateInfo.email) {
+                    delete memberUpdateInfo.email;
+                }
                 const updateMember = await Member.findByIdAndUpdate(req.params.id, {
-                    $set: req.body
+                    $set: memberUpdateInfo
                 }, { new: true })
                 res.status(200).json(updateMember);
             } catch (error) {

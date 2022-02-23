@@ -119,7 +119,7 @@ const getAction = async (req, res, next) => {
         if (checkAuthorBoard || checkAuthorizedList) {
             try {
                 let actionInfo = await Action.findById(idAction);
-                res.status(201).json(actionInfo);
+                res.status(200).json(actionInfo);
             }
             catch (error) {
                 loggerError(error)
@@ -189,6 +189,9 @@ const updateAction = async (req, res, next) => {
         //Remove idList change
         if (actionUpdateInfo.idList) {
             delete actionUpdateInfo.idList;
+        }
+        if (actionUpdateInfo.idAuthor) {
+            delete actionUpdateInfo.idAuthor;
         }
         const [checkAuthorBoard, checkAuthorizedList, errorInfo] = await checkAuthorized(idAction, idMember)
         if (checkAuthorBoard || checkAuthorizedList) {
