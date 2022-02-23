@@ -1,5 +1,7 @@
 const logger = require('../helper/logger');
 const Board = require('../models/Board');
+const List = require('../models/List');
+const Action = require('../models/Action');
 
 let loggerInfo = logger('Info');
 let loggerError = logger('Error');
@@ -120,8 +122,19 @@ const deleteBoard = async (req, res, next) => {
         try {
             const checkAuthor = await Board.findOne({ $and: [{ idAuthor: req.member.id }, { _id: req.params.id }] });
             if (checkAuthor) {
-
-                await Board.findOneAndDelete({ $and: [{ idAuthor: req.member.id }, { _id: req.params.id }] });
+                try {
+                    await Board.findOneAndDelete({ $and: [{ idAuthor: req.member.id }, { _id: req.params.id }] });
+                    let lists = await List.find({idBoard: req.params.id})
+                    await List.deleteMany({idBoard: req.params.id})
+                    for(let i in lists)
+                    {
+                        await Action.deleteMany({idList: lists[i]._id})
+                    }
+                }
+                catch (error) {
+                    loggerError(error)
+                    res.status(500).json(error)
+                }
                 res.status(200).json("Board has been deleted!");
             }
             else {

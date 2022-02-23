@@ -63,7 +63,7 @@ const deleteMember = async (req, res, next) => {
     }
     else {
         loggerError("Not accessed!");
-        res.status(403).json("You only detele your accout");
+        res.status(403).json("You only detele your account");
     }
 }
 

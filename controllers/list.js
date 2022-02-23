@@ -1,6 +1,7 @@
 const logger = require('../helper/logger');
 const List = require('../models/List');
 const Board = require('../models/Board');
+const Action = require('../models/Action');
 
 let loggerInfo = logger('Info');
 let loggerError = logger('Error');
@@ -196,6 +197,7 @@ const deleteList = async (req, res, next) => {
         if (checkAuthorization || checkMember) {
             try {
                 await List.findByIdAndDelete(idList);
+                await Action.deleteMany({idList: idList})
                 res.status(200).json("List has been deleted!");
             } catch (error) {
                 loggerError(error)

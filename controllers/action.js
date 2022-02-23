@@ -44,15 +44,22 @@ const checkAuthorized = async (idAction, idMember, idList = null) => {
     }
 
     let listinfo;
+    let idBoard
     try {
         listinfo = await List.findById(idList)
+        if (listinfo) {
+            idBoard = listinfo.idBoard;
+        }
+        else {
+            loggerError("No list was found!")
+            return [null, null, "No list was found!"]
+        }
     }
     catch (error) {
         loggerError(error)
         return [null, null, error]
     }
 
-    let idBoard = listinfo.idBoard;
     //Check is board author
     let checkAuthorBoard;
     try {
@@ -71,7 +78,7 @@ const createAction = async (req, res, next) => {
     if (req.member) {
         const idList = req.body.idList;
         const idMember = req.member.id;
-        const [checkAuthorBoard, checkAuthorizedList,errorInfo] = await checkAuthorized(undefined, idMember, idList)
+        const [checkAuthorBoard, checkAuthorizedList, errorInfo] = await checkAuthorized(undefined, idMember, idList)
         if (checkAuthorBoard || checkAuthorizedList) {
             const action = new Action(req.body);
             req.body.idAuthor = idMember;
@@ -140,7 +147,7 @@ const getAction = async (req, res, next) => {
 const getActions = async (req, res, next) => {
     loggerInfo('Getting Action...');
     if (req.member) {
-        const idList = req.body.idList;
+        const idList = req.query.idList;
         const idMember = req.member.id;
         const [checkAuthorBoard, checkAuthorizedList, errorInfo] = await checkAuthorized(undefined, idMember, idList)
         if (checkAuthorBoard || checkAuthorizedList) {
